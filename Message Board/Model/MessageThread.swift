@@ -15,7 +15,7 @@ class MessageThread: Codable, Equatable {
     var messages: [MessageThread.Message]
     let identifier: String
     
-
+    
     init(title: String, messages: [MessageThread.Message] = [], identifier: String = UUID().uuidString) {
         self.title = title
         self.messages = messages
@@ -26,7 +26,7 @@ class MessageThread: Codable, Equatable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let title = try container.decode(String.self, forKey: .title)
         let identifier = try container.decode(String.self, forKey: .identifier)
-        let messages = try container.decode([Message].self, forKey: .messages)
+        let messages = Array(try container.decode([String: Message].self, forKey: .messages).values)
 
         self.title = title
         self.identifier = identifier
