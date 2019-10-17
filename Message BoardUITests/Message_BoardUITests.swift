@@ -9,18 +9,69 @@
 import XCTest
 
 class Message_BoardUITests: XCTestCase {
+    override func setUp() {
+           super.setUp()
+           
+           continueAfterFailure = false
+           app = XCUIApplication()
+           
+           // NOTE: Keep this setup as is for UI Testing
+           app.launchArguments = ["UITesting"]
+           app.launch()
+       }
     
     var app: XCUIApplication!
+     
+     func testNewThreadCreated(){
+        let messageTable = app.tables.matching(identifier: "MessageThreadsTableViewController")
+        let textField = messageTable.textFields["Create a new thread:"]
+        textField.tap()
+        textField.typeText("William\n")
+        let cell = messageTable.cells.staticTexts["William"]
+        XCTAssertEqual(cell.label, "William")
+   
     
-    override func setUp() {
-        super.setUp()
+}
+//    func testAddNewMessageButton() {
+//        let myTable = app.tables.matching(identifier: "MessageThreadsTableViewController")
+//        let newThreadTextField = myTable.textFields["Create a new thread:"]
+//        newThreadTextField.tap()
+//        newThreadTextField.typeText("New Thread")
+//        newThreadTextField.typeText("\n")
+//        let newCell = myTable.cells.staticTexts["New Thread"]
+//        newCell.tap()
+//        let newMessageButton = app.navigationBars["New Thread"].buttons["Add"]
+//        newMessageButton.tap()
+//        let nameTextField = app.textFields["Enter your name:"]
+//        nameTextField.tap()
+//        nameTextField.typeText("Jordan")
+//        let sendButton = app.navigationBars["New Message"].buttons["Send"]
+//        sendButton.tap()
+//        let messageThreadTable = app.tables.matching(identifier: "MessageThreadDetailTableViewController")
+//        let messageCell = messageThreadTable.cells.staticTexts["Jordan"]
+//
+//        XCTAssertEqual(messageCell.label, "Jordan")
+//    }
+    func testNewMessageInThread(){
+        let messageTable = app.tables.matching(identifier: "MessageThreadsTableViewController")
+        let textField = messageTable.textFields["Create a new thread:"]
+        textField.tap()
+        textField.typeText("William")
+        textField.typeText("\n")
+        let cell = messageTable.cells.staticTexts["William"]
+       
+        cell.tap()
+        let novelMessageButton = app.navigationBars["William"].buttons["Add"]
+        novelMessageButton.tap()
+        let nameTextField = app.textFields["Enter your name:"]
+        nameTextField.tap()
+        nameTextField.typeText("Will_I_Am")
+        let deliverButton = app.navigationBars["New Message"].buttons["Send"]
+        deliverButton.tap()
+        let messagesThreadTable = app.tables.matching(identifier: "MessageThreadDetailTableViewController")
+        let messagesCell = messagesThreadTable.cells.staticTexts["Will_I_Am"]
+        XCTAssertEqual(messagesCell.label, "Will_I_Am")
         
-        continueAfterFailure = false
-        app = XCUIApplication()
         
-        // NOTE: Keep this setup as is for UI Testing
-        app.launchArguments = ["UITesting"]
-        app.launch()
     }
-    
 }
